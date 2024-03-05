@@ -73,7 +73,7 @@ const Dashboard = () => {
                     <Grid container spacing={{ xs: 2, md: 3 }} justifyContent='space-around' sx = {{margin : "20px"}}>
                         {
                             displayData?.map((product, i) => (
-                                <MediaCard {...product} key = {i}/>
+                                <MediaCard {...product} key = {i} user = {logindata}/>
                             ))
                         }
                     </Grid>
