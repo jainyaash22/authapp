@@ -39,7 +39,11 @@ const userSchema = new mongoose.Schema({
                 required: true,
             }
         }
-    ]
+    ],
+    bookmarks: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'products'
+    }]
 });
 
 
