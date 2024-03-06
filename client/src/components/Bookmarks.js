@@ -6,18 +6,12 @@ import Box from '@mui/material/Box';
 import MediaCard from './Card';
 import { ButtonBase, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, Typography, Avatar, Divider } from '@mui/material'
 import Search from './Search';
-// import { Box } from "@mui/system";
-// import Search from './Search';
 
-const Dashboard = () => {
-
+const Bookmarks = () => { 
     const { logindata, setLoginData } = useContext(LoginContext);
-
     const [data, setData] = useState(false);
     const [productData, setProductData] = useState([]);
-    const [displayData, setDisplayData] = useState([]);
-    const bookmark = false;
-
+    const bookmark = true;
     const history = useNavigate();
 
     const DashboardValid = async () => {
@@ -38,24 +32,25 @@ const Dashboard = () => {
         } else {
             console.log("user verify");
             setLoginData(data)
-            history("/dash");
+            history("/bookmarks");
         }
 
-        const products = await fetch("/products", {
-            method: "GET",
+        const products = await fetch("/users/getbookmarks", {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
-            }
+            },
+            body: JSON.stringify({
+                userId : logindata.ValidUserOne._id
+            })
         })
         .then((data) => data.json())
         .then((data) => {
             setProductData(data)
-            setDisplayData(data)
         })
         .catch((err) => console.log(err))
     }
-
 
     useEffect(() => {
         setTimeout(() => {
@@ -67,12 +62,11 @@ const Dashboard = () => {
 
     return (
         <>
-            <Search displayData = {productData} setDisplayData = {setDisplayData} />
             {
-                displayData.length ? (
+                productData.length ? (
                     <Grid container spacing={{ xs: 2, md: 3 }} justifyContent='space-around' sx = {{margin : "20px"}}>
                         {
-                            displayData?.map((product, i) => (
+                            productData?.map((product, i) => (
                                 <MediaCard {...product} key = {i} user = {logindata} bookmark = {bookmark}/>
                             ))
                         }
@@ -82,8 +76,7 @@ const Dashboard = () => {
                 )
             }
         </>
-
     )
-}
+};
 
-export default Dashboard;
+export default Bookmarks;

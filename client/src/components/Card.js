@@ -61,7 +61,16 @@ export default function MediaCard(props) {
       </CardContent>
       <CardActions>
         <Button size="small" sx = {{backgroundColor : "black", color : "#fff"}}>{props.price}</Button>
-        <Button size='small' sx = {{backgroundColor : "black", color : "#fff"}} onClick={() => handleCLick(props._id)}>Add to Wishlist</Button>
+        {
+          props.bookmark ? (
+            <></>
+          ) :
+          (
+
+            <Button size='small' sx = {{backgroundColor : "black", color : "#fff"}} onClick={() => handleCLick(props._id)}>Add to Bookmark</Button>
+          )
+
+        }
       </CardActions>
       {
         message != "" ? (

@@ -7,7 +7,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { useNavigate , NavLink } from "react-router-dom"
 
 const Header = () => {
-
     const { logindata, setLoginData } = useContext(LoginContext);
 
     const history = useNavigate();
@@ -20,6 +19,13 @@ const Header = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const handleNavigate = () => {
+        history('/bookmarks');
+    }
+
+    const handleUpdate = () => {
+        history('/updateprofile')
+    }
 
 
     const logoutuser = async () => {
@@ -91,6 +97,12 @@ const Header = () => {
                                         logoutuser()
                                         handleClose()
                                     }}>Logout</MenuItem>
+                                    <MenuItem onClick={() => {
+                                       handleNavigate() 
+                                    }}>Bookmark</MenuItem>
+                                    <MenuItem onClick={() => {
+                                       handleUpdate() 
+                                    }}>Update Profile</MenuItem>
                                 </>
                             ) : (
                                 <>

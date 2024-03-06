@@ -123,6 +123,29 @@ router.get("/logout",authenticate,async(req,res)=>{
     }
 })
 
+router.post('/users/update', async (req, res) => {
+    const userId = req.body.userId; // Assuming you're using authentication middleware to populate req.user with the authenticated user
+    const fname = req.body.fname;
+
+    try {
+        // Find the user by ID
+        const user = await userdb.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update the fname field
+        user.fname = fname;
+        await user.save();
+
+        // Respond with the updated user object
+        res.status(200).json({ message: 'First name updated successfully', user: user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 module.exports = router;
 
