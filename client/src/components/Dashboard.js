@@ -4,7 +4,7 @@ import { LoginContext } from './ContextProvider/Context';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import MediaCard from './Card';
-import { ButtonBase, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, Typography, Avatar, Divider } from '@mui/material'
+import { ButtonBase, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, Typography, Avatar, Divider, Button } from '@mui/material'
 import Search from './Search';
 // import { Box } from "@mui/system";
 // import Search from './Search';
@@ -16,6 +16,7 @@ const Dashboard = () => {
     const [data, setData] = useState(false);
     const [productData, setProductData] = useState([]);
     const [displayData, setDisplayData] = useState([]);
+    const [mailMessage, setMailMessage] = useState(null);
     const bookmark = false;
 
     const history = useNavigate();
@@ -65,8 +66,38 @@ const Dashboard = () => {
 
     }, [])
 
+    const handleGetOffer = async() => {
+        try {
+            const response = await fetch('/mailOffers', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ email: logindata.ValidUserOne.email })
+            });
+        
+            const data = await response.json();
+            if (response.ok) {
+              setMailMessage(data.message) // Success message
+            } else {
+              setMailMessage(data.message); // Error message
+            }
+          } catch (error) {
+            setMailMessage('Error:', error);
+          }
+    }
+
     return (
         <>
+            <div style = {{backgroundColor : 'red', padding : '20px', color : 'white'}}>
+                <div style = {{display : 'flex', justifyContent : 'space-around'}}>
+                    <h2>Get all the available offers on Gmail</h2>
+                    <Button onClick={handleGetOffer} style={{ color : 'white' , border : '3px solid black', backgroundColor : 'black'}}>Get Offers</Button>
+                </div>
+                <h4 style={{ textAlign : 'center', color : 'yellow'}}>
+                    {mailMessage}
+                </h4>
+            </div>
             <Search displayData = {productData} setDisplayData = {setDisplayData} />
             {
                 displayData.length ? (
